@@ -1,3 +1,3 @@
 # COMP300900_FYP
 
-FYP Computer Science 2022
+FYP Computer Science 2021-2022
