@@ -8,14 +8,26 @@ from os import listdir
 import random
 
 # Object Classes
-# 0: Zeri
+# 0 - idle
+# 1 - auto attack
+# 2 - q ability
+# 3 - w ability
+# 4 - e ability
+# 5 - r ability
 
 # Params #
 # Print out the status messages and where stuff is placed
 debug = True
 
 # Directory of the cleaned/masked images
-masked_images_dir = "media/cleaned"
+masked_images_dir = "media/voli-cleaned"
+
+cleaned_aa_dir = "media/voli-aa-cleaned"
+cleaned_q_dir = "media/voli-q-cleaned"
+cleaned_w_dir = "media/voli-w-cleaned"
+cleaned_e_dir = "media/voli-e-cleaned"
+cleaned_r_dir = "media/voli-r-cleaned"
+
 # Directory in which the map backgrounds are located
 map_images_dir = "media/map"
 # Directory in which the map backgrounds with fog of war are located
@@ -30,14 +42,14 @@ overlay_path = "ui"
 print_box = False
 
 # Size of the datasets the program should generate
-dataset_size = 150
+dataset_size = 250
 
 # Beginning index for naming output files
 start_index = 0
 
 # How many characters should be added minimum/maximum to each sample
-characters_min = 1
-characters_max = 4
+characters_min = 0
+characters_max = 1
 assert (characters_min <= characters_max), "Error, characters_max needs to be larger than character_min!"
 
 # The scale factor of how much a champion image needs to be scaled to have a realistic size
@@ -118,7 +130,7 @@ def add_object(path, cur_image_path, object_class, bias_point, last):
     obj_w, obj_h = obj.size
 
     # Rescale the image based on the scale factor
-    if object_class == 0:  # e.g. a champion's class identifier
+    if object_class >= 0:  # e.g. a champion's class identifier
         scale_factor = random.uniform(scale_champions - random_scale_champions,
                                       scale_champions + random_scale_champions)
         size = int(obj_w * scale_factor), int(obj_h * scale_factor)
@@ -135,7 +147,7 @@ def add_object(path, cur_image_path, object_class, bias_point, last):
     # Compute the position of minions based on the bias point. Normally distribute the minions around
     # a central point to create clusters of objects for more realistic screenshot fakes
     # Champions and structures are uniformly distributed
-    if object_class == 0:  # Champion
+    if object_class >= 0:  # Champion
         obj_pos_center = (random.randint(0, w - 1), random.randint(0, h - 1))
     else:
         x_coord = np.random.normal(loc=bias_point[0], scale=bias_strength)
@@ -242,6 +254,11 @@ def add_object(path, cur_image_path, object_class, bias_point, last):
 
 # Main function
 obj_dirs = sorted(listdir(masked_images_dir))
+aa_dirs = sorted(listdir(cleaned_aa_dir))
+q_dirs = sorted(listdir(cleaned_q_dir))
+w_dirs = sorted(listdir(cleaned_w_dir))
+e_dirs = sorted(listdir(cleaned_e_dir))
+r_dirs = sorted(listdir(cleaned_r_dir))
 maps = sorted(listdir(map_images_dir))
 
 for dataset in range(0, dataset_size):
@@ -263,7 +280,67 @@ for dataset in range(0, dataset_size):
             [masked_images_dir + "/" + temp_obj_folder, 0])
 
     if debug:
-        print("Adding {} champion(s)!".format(len(characters)))
+        print("Adding {} Idle class!".format(len(characters)))
+
+    skills_aa = []
+    for i in range(0, random.randint(characters_min, characters_max)):
+        # Select a random object that we want to add
+        temp_obj_folder = random.choice(aa_dirs)
+        temp_obj_path = cleaned_aa_dir + "/" + temp_obj_folder
+        # Select a random masked image of object
+        skills_aa.append(
+            [cleaned_aa_dir + "/" + temp_obj_folder, 1])
+
+    if debug:
+        print("Adding {} AA class)!".format(len(skills_aa)))
+
+    skills_q = []
+    for i in range(0, random.randint(characters_min, characters_max)):
+        # Select a random object that we want to add
+        temp_obj_folder = random.choice(q_dirs)
+        temp_obj_path = cleaned_q_dir + "/" + temp_obj_folder
+        # Select a random masked image of object
+        skills_q.append(
+            [cleaned_q_dir + "/" + temp_obj_folder, 2])
+
+    if debug:
+        print("Adding {} Q class)!".format(len(skills_q)))
+
+    skills_w = []
+    for i in range(0, random.randint(characters_min, characters_max)):
+        # Select a random object that we want to add
+        temp_obj_folder = random.choice(w_dirs)
+        temp_obj_path = cleaned_w_dir + "/" + temp_obj_folder
+        # Select a random masked image of object
+        skills_w.append(
+            [cleaned_w_dir + "/" + temp_obj_folder, 3])
+
+    if debug:
+        print("Adding {} W class)!".format(len(skills_w)))
+
+    skills_e = []
+    for i in range(0, random.randint(characters_min, characters_max)):
+        # Select a random object that we want to add
+        temp_obj_folder = random.choice(e_dirs)
+        temp_obj_path = cleaned_e_dir + "/" + temp_obj_folder
+        # Select a random masked image of object
+        skills_e.append(
+            [cleaned_e_dir + "/" + temp_obj_folder, 4])
+
+    if debug:
+        print("Adding {} E class)!".format(len(skills_w)))
+
+    skills_r = []
+    for i in range(0, random.randint(characters_min, characters_max)):
+        # Select a random object that we want to add
+        temp_obj_folder = random.choice(r_dirs)
+        temp_obj_path = cleaned_r_dir + "/" + temp_obj_folder
+        # Select a random masked image of object
+        skills_r.append(
+            [cleaned_r_dir + "/" + temp_obj_folder, 5])
+
+    if debug:
+        print("Adding {} R class)!".format(len(skills_w)))
 
     # Add a fog of war / empty screenshot
     if 100 - fog_of_war_prob < random.randint(0, 100):
@@ -276,7 +353,7 @@ for dataset in range(0, dataset_size):
             f.write("")
     else:
         # Now figure out the order in which we want to add the objects (So that sometimes objects will overlap)
-        objects_to_add = characters
+        objects_to_add = characters + skills_aa + skills_q + skills_w + skills_e + skills_r
         random.shuffle(objects_to_add)
         # Read in the current map background as image
         map_image = Image.open(map_bg)

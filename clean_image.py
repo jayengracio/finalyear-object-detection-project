@@ -5,16 +5,17 @@ from PIL import Image, ImageFilter
 
 # Parameters
 # Input directory of images
-input_dir = "media/zeri-gg-images"
+input_dir = "media/volibear/voli_q"
 # Output directory of masked and cropped images
-output_dir = "media/cleaned"
+output_dir = "media/voli-q-cleaned"
 # Area to pre-crop the images to (min_x, min_y, max_x, max_y), can save runtime for large screenshots with small objects
 # Teemo model viewer:
-area = (700, 300, 1920, 928)
+area = (700, 170, 1768, 928)
 # Teemo model viewer pink background
+# purple background
 background = (95, 80, 170)
 # Teemo model viewer tolerance (25)
-tolerance = 25
+tolerance = 19
 # This is needed because there is another shade of pink in the background
 tolerance_offset_1 = 1.0
 tolerance_offset_2 = 1.0  # Greenscreen: 0.74
