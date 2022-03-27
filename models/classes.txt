@@ -1,1 +1,6 @@
-zeri
+renekton
+auto_attack
+spell_q
+spell_w
+spell_e
+spell_r
