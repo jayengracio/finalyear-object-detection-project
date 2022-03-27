@@ -4,7 +4,7 @@ import numpy as np
 
 
 def initialize(is_cuda):
-    net = cv2.dnn.readNet("model/test.onnx")
+    net = cv2.dnn.readNet("model/best.onnx")
     if is_cuda:
         print("Running on CUDA")
         net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
@@ -16,12 +16,12 @@ def initialize(is_cuda):
     return net
 
 
-capture = cv2.VideoCapture("media/gameplay.mp4")
+capture = cv2.VideoCapture("media/rene_game.mp4")
 INPUT_WIDTH = 640
 INPUT_HEIGHT = 640
 SCORE_THRESHOLD = 0.2
-NMS_THRESHOLD = 0.4
-CONFIDENCE_THRESHOLD = 0.4
+NMS_THRESHOLD = 0.6
+CONFIDENCE_THRESHOLD = 0.6
 
 
 def detect(image, net):
@@ -52,7 +52,7 @@ def wrap_detection(input_image, output_data):
     for r in range(rows):
         row = output_data[r]
         conf = row[4]
-        if conf >= 0.4:
+        if conf >= 0.93:
 
             classes_scores = row[5:]
             _, _, _, max_index = cv2.minMaxLoc(classes_scores)
@@ -84,7 +84,7 @@ def wrap_detection(input_image, output_data):
     return result_class_ids, result_confidences, result_boxes
 
 
-def format_yolov5(frame):
+def format_frame(frame):
     row, col, _ = frame.shape
     _max = max(col, row)
     result = np.zeros((_max, _max, 3), np.uint8)
@@ -109,7 +109,7 @@ while True:
 
     start_time = time()
     frame = cv2.resize(frame, (1600, 900))
-    inputImage = format_yolov5(frame)
+    inputImage = format_frame(frame)
     outs = detect(inputImage, net)
 
     class_ids, confidences, boxes = wrap_detection(inputImage, outs[0])

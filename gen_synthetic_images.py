@@ -1,4 +1,5 @@
 # Copyright 2019 Oliver Struckmeier
+# Modified By John Engracio, for use in educational purposes.
 # Licensed under the GNU General Public License, version 3.0. See LICENSE for details
 
 import numpy as np
@@ -8,7 +9,7 @@ from os import listdir
 import random
 
 # Object Classes
-# 0 - idle
+# 0 - default
 # 1 - auto attack
 # 2 - q ability
 # 3 - w ability
@@ -19,14 +20,13 @@ import random
 # Print out the status messages and where stuff is placed
 debug = True
 
-# Directory of the cleaned/masked images
-masked_images_dir = "media/voli-cleaned"
-
-cleaned_aa_dir = "media/voli-aa-cleaned"
-cleaned_q_dir = "media/voli-q-cleaned"
-cleaned_w_dir = "media/voli-w-cleaned"
-cleaned_e_dir = "media/voli-e-cleaned"
-cleaned_r_dir = "media/voli-r-cleaned"
+# Directories of the cleaned/masked images
+cleaned_default_dir = "media/rene-cleaned"
+cleaned_aa_dir = "media/aa-cleaned"
+cleaned_q_dir = "media/q-cleaned"
+cleaned_w_dir = "media/w-cleaned"
+cleaned_e_dir = "media/e-cleaned"
+cleaned_r_dir = "media/r-cleaned"
 
 # Directory in which the map backgrounds are located
 map_images_dir = "media/map"
@@ -35,14 +35,14 @@ map_fog_dir = "media/map-fog"
 # Directory for output
 output_dir = "train_data"
 # Sometimes randomly add the overlay
-overlay_chance = 25
+overlay_chance = 28
 overlay_path = "ui"
 
 # Prints a bounding box around the placed object in red (for debug purposes)
 print_box = False
 
 # Size of the datasets the program should generate
-dataset_size = 250
+dataset_size = 320
 
 # Beginning index for naming output files
 start_index = 0
@@ -62,7 +62,7 @@ rotate = 10
 
 # Make champions semi-transparent sometimes to simulate them being in a brush/invisible, value in percent chance a
 # champion will be semi-transparent
-invisibility_prob = 22
+invisibility_prob = 20
 
 # Output image size
 output_size = (1920, 1080)
@@ -76,8 +76,8 @@ bias_strength = 220  # 220 is good, don't select too large or the objects will b
 sampling_method = Image.BILINEAR  # IMO the best but use both to have more different methods
 
 # Add random noise to pixels, value in percent chance in which image will have noise applied
-noise_prob = 23
-noise = (40, 40, 40)
+noise_prob = 20
+noise = (70, 60, 55)
 
 # Blur the image
 blur = False
@@ -253,7 +253,7 @@ def add_object(path, cur_image_path, object_class, bias_point, last):
 
 
 # Main function
-obj_dirs = sorted(listdir(masked_images_dir))
+obj_dirs = sorted(listdir(cleaned_default_dir))
 aa_dirs = sorted(listdir(cleaned_aa_dir))
 q_dirs = sorted(listdir(cleaned_q_dir))
 w_dirs = sorted(listdir(cleaned_w_dir))
@@ -274,13 +274,13 @@ for dataset in range(0, dataset_size):
     for i in range(0, random.randint(characters_min, characters_max)):
         # Select a random object that we want to add
         temp_obj_folder = random.choice(obj_dirs)
-        temp_obj_path = masked_images_dir + "/" + temp_obj_folder
+        temp_obj_path = cleaned_default_dir + "/" + temp_obj_folder
         # Select a random masked image of object
         characters.append(
-            [masked_images_dir + "/" + temp_obj_folder, 0])
+            [cleaned_default_dir + "/" + temp_obj_folder, 0])
 
     if debug:
-        print("Adding {} Idle class!".format(len(characters)))
+        print("Adding {} Default/Idle class!".format(len(characters)))
 
     skills_aa = []
     for i in range(0, random.randint(characters_min, characters_max)):
@@ -316,7 +316,7 @@ for dataset in range(0, dataset_size):
             [cleaned_w_dir + "/" + temp_obj_folder, 3])
 
     if debug:
-        print("Adding {} W class)!".format(len(skills_w)))
+        print("Adding {} W class)!".format(len(skills_q)))
 
     skills_e = []
     for i in range(0, random.randint(characters_min, characters_max)):
@@ -328,7 +328,7 @@ for dataset in range(0, dataset_size):
             [cleaned_e_dir + "/" + temp_obj_folder, 4])
 
     if debug:
-        print("Adding {} E class)!".format(len(skills_w)))
+        print("Adding {} E class)!".format(len(skills_e)))
 
     skills_r = []
     for i in range(0, random.randint(characters_min, characters_max)):
@@ -340,7 +340,7 @@ for dataset in range(0, dataset_size):
             [cleaned_r_dir + "/" + temp_obj_folder, 5])
 
     if debug:
-        print("Adding {} R class)!".format(len(skills_w)))
+        print("Adding {} R class)!".format(len(skills_r)))
 
     # Add a fog of war / empty screenshot
     if 100 - fog_of_war_prob < random.randint(0, 100):
