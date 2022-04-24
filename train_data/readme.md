@@ -1,0 +1,2 @@
+The following files in this directory are only to show a structural example of what a train_data folder should look like.
+Additionally, the images and label text files are the expected examples of the data required.
