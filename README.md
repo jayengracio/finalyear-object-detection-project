@@ -16,3 +16,8 @@
 - Teemo.GG: https://teemo.gg/
 - MakeSense.AI: https://www.makesense.ai/
 - OBS: https://obsproject.com/
+
+### Previous Outputs
+- https://youtu.be/pNl-ff0ccMc - early iteration
+- https://youtu.be/qal6MQ1nH_c - middle iteration
+- https://youtu.be/qYYFRdbaEtI - late iteration
