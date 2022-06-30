@@ -1,8 +1,7 @@
-# Video/Image analysis to identify and predict a video game character's future action(s)
-## COMP300900 Final Year Project:
+# Video/Image analysis to identify and predict a League of Legends' champion future movement and abilities
+## COMP30900 Final Year Project:
 - FYP Computer Science 2021-2022
 - By: John Joseph Engracio
-- Student ID: 18452452
 
 ### Prerequisites
 - Python 3 (Anaconda is recommended)
