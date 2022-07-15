@@ -1,5 +1,5 @@
 # Video/Image analysis to identify and predict a League of Legends' champion future movement and abilities
-## COMP30900 Final Year Project:
+## Final Year Project:
 - FYP Computer Science 2021-2022
 - By: John Joseph Engracio
 
